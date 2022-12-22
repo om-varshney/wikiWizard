@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/pdf-vision.iml" filepath="$PROJECT_DIR$/.idea/pdf-vision.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/wiki-wizard.iml" filepath="$PROJECT_DIR$/.idea/wiki-wizard.iml" />
     </modules>
   </component>
 </project>
