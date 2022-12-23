@@ -2,6 +2,7 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   searchButton: {
@@ -15,8 +16,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainSearch = () => {
+const MainInput = ({ buttonText, placeHolderText, width, onButtonClick }) => {
   const classes = useStyles();
+
+  const [input, setInput] = useState("");
+
   return (
     <Paper
       component="form"
@@ -24,11 +28,11 @@ const MainSearch = () => {
         p: "10px 20px",
         display: "flex",
         alignItems: "center",
-        width: "65%",
+        width: `${width}%`,
         borderRadius: "500px",
         backgroundColor: "transparent",
         backgroundImage:
-          "linear-gradient(to right, rgba(76, 147, 253, 1), rgba(76, 147, 253, 0))",
+          "linear-gradient(to right, rgba(76, 147, 253, 0.5), rgba(76, 147, 253, 0))",
       }}
     >
       <InputBase
@@ -38,15 +42,21 @@ const MainSearch = () => {
           color: "rgba(255, 255, 255, 1)",
           fontFamily: "Roboto !important",
         }}
-        placeholder="What would you like to talk about today?"
-        inputProps={{
-          "aria-label": "What would you like to talk about today?",
+        placeholder={placeHolderText}
+        value={input}
+        onChange={(e) => {
+          setInput(e.target.value);
         }}
       />
-      <Button variant="contained" size="large" className={classes.searchButton}>
-        START
+      <Button
+        variant="contained"
+        size="large"
+        className={classes.searchButton}
+        onClick={() => onButtonClick(input)}
+      >
+        {buttonText}
       </Button>
     </Paper>
   );
 };
-export default MainSearch;
+export default MainInput;

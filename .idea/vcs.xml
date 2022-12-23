@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/processing/wikipedia-to-json" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/wikipedia-to-json" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/wikipedia-to-json" vcs="Git" />
   </component>
 </project>
