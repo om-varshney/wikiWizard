@@ -1,2 +1,2 @@
-# PDFVision
-PDFVision is a serverless web-application that leverages the power of Deep Learning and Natural Language Processing to filter relevant information based on a prompt, out of a given text source.
+# WikiWizard
+WikiWizard is a serverless application that leverages the power of Deep Learning and NLP and makes the task of obtaining information about a particular topic easier than ever.
