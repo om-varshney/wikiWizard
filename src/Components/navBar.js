@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "right",
   },
   navBarLink: {
-    color: "#9D9CB5",
+    color: "white",
     fontFamily: "Roboto, sans-serif",
     fontSize: "15px",
     paddingLeft: "8vw",

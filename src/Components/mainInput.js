@@ -1,23 +1,81 @@
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  setBERTAnswers,
+  setBERTAnswerState,
+  setNotificationContent,
+  setTopic,
+  setUserQuery,
+} from "../redux/actions/wizardActions";
 
 const useStyles = makeStyles((theme) => ({
   searchButton: {
-    backgroundColor: "#EA55B7 !important",
-    borderRadius: "500px !important",
-    paddingLeft: "20px !important",
-    paddingRight: "20px !important",
+    backgroundColor: "rgba(234, 85, 183, 0.8) !important",
     "&:hover": {
-      backgroundColor: "#c62597 !important",
+      backgroundColor: "rgba(234, 85, 183, 0.9) !important",
     },
+  },
+  crossButton: {
+    backgroundColor: "rgba(76, 147, 253, 0.5) !important",
+    "&:hover": {
+      backgroundColor: "rgba(76, 147, 253, 0.7) !important",
+    },
+  },
+  searchIcon: {
+    color: "white",
+  },
+  crossIcon: {
+    color: "White",
+  },
+  divider: {
+    backgroundColor: "grey",
   },
 }));
 
-const MainInput = ({ buttonText, placeHolderText, width, onButtonClick }) => {
+const onSearch = (input, type, dispatch) => {
+  if (type === "setTopic") {
+    if (input) {
+      dispatch(setTopic(input));
+    } else {
+      dispatch(
+        setNotificationContent({
+          type: "warning",
+          msg: "Please provide a topic to search",
+        })
+      );
+    }
+  } else if (type === "setQuery") {
+    if (input) {
+      dispatch(setUserQuery(input));
+      dispatch(setBERTAnswerState(false));
+    } else {
+      dispatch(
+        setNotificationContent({
+          type: "warning",
+          msg: "Please ask a question first",
+        })
+      );
+    }
+  }
+};
+
+const onClose = (type, dispatch) => {
+  if (type === "setQuery") {
+    dispatch(setUserQuery(""));
+    dispatch(setBERTAnswers([]));
+  }
+};
+
+const MainInput = ({ placeHolderText, width, type }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [input, setInput] = useState("");
 
@@ -47,15 +105,38 @@ const MainInput = ({ buttonText, placeHolderText, width, onButtonClick }) => {
         onChange={(e) => {
           setInput(e.target.value);
         }}
+        required={true}
       />
-      <Button
-        variant="contained"
-        size="large"
+      <IconButton
+        type="button"
+        aria-label="search"
+        size="medium"
+        onClick={() => {
+          onSearch(input, type, dispatch);
+        }}
         className={classes.searchButton}
-        onClick={() => onButtonClick(input)}
       >
-        {buttonText}
-      </Button>
+        <SearchIcon className={classes.searchIcon} />
+      </IconButton>
+      <Divider
+        orientation="vertical"
+        className={classes.divider}
+        sx={{ m: 1, height: "28px" }}
+      />
+      <IconButton
+        type="button"
+        size="medium"
+        aria-label="close"
+        className={classes.crossButton}
+        onClick={() => {
+          if (input) {
+            setInput("");
+            onClose(type, dispatch);
+          }
+        }}
+      >
+        <CloseIcon className={classes.crossIcon} />
+      </IconButton>
     </Paper>
   );
 };

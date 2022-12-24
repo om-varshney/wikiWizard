@@ -7,13 +7,22 @@ import NavBar from "./Components/navBar";
 import HeroSection from "./Components/heroSection";
 import MainInput from "./Components/mainInput";
 import QnASection from "./Components/questionAnswersSection";
-import { useEffect, useState } from "react";
-import parseWikiContent from "./processing/wikiParse";
+import React, { useEffect, useState } from "react";
+import fetchWikiData from "./processing/wikiParse";
 import TfIdf from "./processing/TfIdf";
 import * as tf from "@tensorflow/tfjs";
 import * as qna from "@tensorflow-models/qna";
 import { Puff } from "react-loader-spinner";
 import Typography from "@mui/material/Typography";
+import { useDispatch, useSelector } from "react-redux";
+import BERTAnswers from "./processing/BERT";
+import MuiAlert from "@mui/material/Alert";
+import { setNotificationContent } from "./redux/actions/wizardActions";
+import { Snackbar } from "@mui/material";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -66,49 +75,11 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const appState = useSelector((state) => state);
 
-  const [answerPage, setAnswerPage] = useState(false);
-  const [wikiContent, setWikiContent] = useState(null);
   const [model, setModel] = useState(null);
-  const [passage, setPassage] = useState("");
-  const [answers, setAnswers] = useState(null);
-
-  const fetchWikiData = async (search) => {
-    if (!search) {
-      return;
-    }
-    const endpoint = `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&utf8=&origin=*&srlimit=1&srsearch=${search}`;
-    const response = await fetch(endpoint);
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    const jsonResponse = await response.json();
-    const pageId = jsonResponse.query.search[0].pageid;
-    const pageTextEndpoint = `https://en.wikipedia.org/w/api.php?action=parse&origin=*&format=json&pageid=${pageId}`;
-    const pageTextResponse = await fetch(pageTextEndpoint);
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    const pageTextJson = await pageTextResponse.json();
-    setWikiContent(parseWikiContent(pageTextJson.parse.text["*"]));
-  };
-
-  const setupPassage = (input) => {
-    setPassage(TfIdf(wikiContent, input));
-  };
-
-  const answerQuestion = async (input) => {
-    if (!input) {
-      return;
-    }
-    if (passage) {
-      console.log(passage);
-      const answers = await model.findAnswers(input, passage);
-      setAnswers(answers);
-    } else {
-      setupPassage(input);
-    }
-  };
+  const [showNotification, setShowNotification] = useState(false);
 
   const loadModel = async () => {
     const loadedModel = await qna.load();
@@ -116,15 +87,34 @@ function App() {
     console.log("Model Loaded");
   };
 
-  const changeView = () => {
-    setWikiContent(null);
-    setPassage("");
-    setAnswers(null);
+  const closeNotification = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowNotification(false);
+    dispatch(setNotificationContent({ type: "", msg: "" }));
   };
 
   useEffect(() => {
     loadModel();
   }, []);
+
+  useEffect(() => {
+    fetchWikiData(appState.topic, dispatch);
+  }, [appState.topic, dispatch]);
+
+  useEffect(() => {
+    TfIdf(appState.wiki, appState.queryText, dispatch);
+  }, [appState.wiki, appState.queryText, dispatch]);
+
+  useEffect(() => {
+    BERTAnswers(appState.passage, appState.queryText, model, dispatch);
+  }, [appState.passage, appState.queryText, dispatch, model]);
+
+  useEffect(
+    () => setShowNotification(!!appState.notification.msg),
+    [appState.notification.msg]
+  );
 
   return (
     // The Main grid which basically covers the whole page.
@@ -157,11 +147,12 @@ function App() {
           <Grid item xs={9} className={classes.navBarContainer}>
             <NavBar />
           </Grid>
-          {wikiContent ? (
+          {appState.view.queryState ? (
             <QnASection
-              onLearnMore={changeView}
-              onQuestion={answerQuestion}
-              answersJson={answers}
+              answerState={appState.bertState}
+              answersJson={appState.answers}
+              topic={appState.topic}
+              init={!!appState.queryText}
             />
           ) : (
             <>
@@ -182,14 +173,28 @@ function App() {
                 className={classes.mainSearch}
               >
                 <MainInput
-                  buttonText="SEARCH"
                   placeHolderText="What would you like to talk about today?"
                   width={65}
-                  onButtonClick={fetchWikiData}
+                  type="setTopic"
                 />
               </Grid>
             </>
           )}
+          <Snackbar
+            open={showNotification}
+            autoHideDuration={2500}
+            onClose={closeNotification}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <Alert
+              onClose={closeNotification}
+              severity={appState.notification.type}
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              {appState.notification.msg}
+            </Alert>
+          </Snackbar>
         </Grid>
       )}
     </>

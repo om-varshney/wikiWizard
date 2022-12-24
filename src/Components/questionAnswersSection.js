@@ -5,10 +5,20 @@ import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 import MainInput from "./mainInput";
 import answerBoxIllustration from "../Assets/Answer Box Illustration.svg";
+import {
+  setBERTAnswers,
+  setBERTPassage,
+  setTopic,
+  setUserQuery,
+  setView,
+  setWikiParagraphs,
+} from "../redux/actions/wizardActions";
+import { useDispatch } from "react-redux";
+import { ThreeDots } from "react-loader-spinner";
 
 const useStyles = makeStyles((theme) => ({
   qnaContainer: {
-    backgroundColor: "rgba(4, 0, 29, 0.7)",
+    backgroundColor: "rgba(4, 0, 29, 0.5)",
     display: "flex",
     marginTop: "10vh !important",
     borderRadius: "20px",
@@ -21,34 +31,44 @@ const useStyles = makeStyles((theme) => ({
     bottom: 10,
   },
   answerBox: {
+    display: "flex",
     height: "60%",
     width: "90%",
     borderRadius: "15px !important",
     backgroundColor: "transparent !important",
     backgroundImage:
       "linear-gradient(to right, rgba(76, 147, 253, 0.5), rgba(76, 147, 253, 0))",
+    justifyContent: "center",
+    alignItems: "center",
   },
   secondaryButton: {
     borderRadius: "500px !important",
-    border: "3px solid #9D9CB5 !important",
     paddingLeft: "20px !important",
     paddingRight: "20px !important",
-    color: "#9D9CB5 !important",
+    color: "white !important",
     "&:hover": {
-      backgroundColor: "#EA55B7 !important",
-      color: "white !important",
-      border: "3px solid white !important",
+      backgroundColor: "rgba(234, 85, 183, 0.8) !important",
     },
   },
   text: {
     color: "white",
+    fontSize: "2.2rem !important",
     fontFamily: "Roboto, sans-serif !important",
   },
 }));
 
-const QnASection = ({ onLearnMore, onQuestion, answersJson }) => {
-  console.log(answersJson);
+const resetApp = (dispatch) => {
+  dispatch(setView({ homeState: true, queryState: false }));
+  dispatch(setTopic(""));
+  dispatch(setUserQuery(""));
+  dispatch(setWikiParagraphs([]));
+  dispatch(setBERTPassage(""));
+  dispatch(setBERTAnswers([]));
+};
+
+const QnASection = ({ answerState, answersJson, topic, init }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   return (
     <Grid
       item
@@ -64,10 +84,9 @@ const QnASection = ({ onLearnMore, onQuestion, answersJson }) => {
         className={classes.qnaIllustration}
       />
       <MainInput
-        buttonText="GO"
-        placeHolderText="Ask me anything about Pokemon"
+        placeHolderText={`Ask me anything about '${topic}'`}
         width={90}
-        onButtonClick={(input) => onQuestion(input)}
+        type="setQuery"
       />
       <Paper
         className={classes.answerBox}
@@ -75,19 +94,23 @@ const QnASection = ({ onLearnMore, onQuestion, answersJson }) => {
           p: "20px 24px",
         }}
       >
-        <Typography className={classes.text}>
-          {answersJson
-            ? answersJson.length === 0
-              ? "Sorry I don't know the answer to that..."
-              : answersJson[0].text
-            : null}
-        </Typography>
+        {answerState || !init ? (
+          <Typography className={classes.text}>
+            {init
+              ? answersJson.length === 0
+                ? "Sorry I don't know the answer to that..."
+                : answersJson[0].text
+              : null}
+          </Typography>
+        ) : (
+          <ThreeDots visible={true} height="80" width="80" color="#ea55b7" />
+        )}
       </Paper>
       <Button
-        variant="outlined"
+        variant="text"
         size="large"
         className={classes.secondaryButton}
-        onClick={onLearnMore}
+        onClick={() => resetApp(dispatch)}
       >
         CHOOSE ANOTHER TOPIC
       </Button>

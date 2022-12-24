@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",
     "@mui/styles": "^5.11.1",
     "@tensorflow-models/qna": "^1.0.1",
@@ -22,7 +23,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loader-spinner": "^5.3.4",
+    "react-redux": "^8.0.5",
     "react-scripts": "5.0.1",
+    "redux": "^4.2.0",
     "request": "^2.88.2",
     "tf-idf-search": "^1.1.3",
     "tiny-tfidf": "^0.9.1",

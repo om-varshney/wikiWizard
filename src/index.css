@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.MuiAlert-filledWarning {
+  background-color: rgba(234, 85, 183, 0.6) !important;
+}
+
+.MuiAlert-filledInfo {
+  background-color: rgba(76, 147, 253, 0.7) !important;
+}
+
+.MuiAlert-filledError {
+  background-color: rgba(131, 0, 0, 0.5) !important;
+}
