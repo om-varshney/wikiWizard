@@ -15,15 +15,15 @@ import {
 } from "../redux/actions/wizardActions";
 import { useDispatch } from "react-redux";
 import { ThreeDots } from "react-loader-spinner";
+import LinkSection from "./secondaryLinksSection";
+import Divider from "@mui/material/Divider";
 
 const useStyles = makeStyles((theme) => ({
   qnaContainer: {
     backgroundColor: "rgba(4, 0, 29, 0.5)",
-    display: "flex",
     marginTop: "10vh !important",
     borderRadius: "20px",
     height: "70vh",
-    padding: "2% 5%",
   },
   qnaIllustration: {
     position: "absolute",
@@ -32,28 +32,58 @@ const useStyles = makeStyles((theme) => ({
   },
   answerBox: {
     display: "flex",
-    height: "60%",
-    width: "90%",
+    width: "auto",
+    height: "100%",
     borderRadius: "15px !important",
     backgroundColor: "transparent !important",
-    backgroundImage:
-      "linear-gradient(to right, rgba(76, 147, 253, 0.5), rgba(76, 147, 253, 0))",
+    // backgroundImage: "linear-gradient(to right, rgba(76, 147, 253, 0.5), rgba(76, 147, 253, 0))",
+    border: "3px solid rgba(76, 147, 253, 0.5)",
     justifyContent: "center",
     alignItems: "center",
   },
-  secondaryButton: {
+  changeTopic: {
     borderRadius: "500px !important",
-    paddingLeft: "20px !important",
-    paddingRight: "20px !important",
+    paddingLeft: "1vw !important",
+    paddingRight: "1vw !important",
+    backgroundColor: "rgba(234, 85, 183, 0.8) !important",
     color: "white !important",
     "&:hover": {
-      backgroundColor: "rgba(234, 85, 183, 0.8) !important",
+      backgroundColor: "rgba(234, 85, 183, 0.9) !important",
+    },
+  },
+  visitWiki: {
+    borderRadius: "500px !important",
+    paddingLeft: "1vw !important",
+    paddingRight: "1vw !important",
+    backgroundColor: "rgba(160, 238, 83, 0.8) !important",
+    fontWeight: "bold !important",
+    color: "#333F4F !important",
+    "&:hover": {
+      backgroundColor: "rgba(160, 238, 83, 0.9) !important",
     },
   },
   text: {
     color: "white",
     fontSize: "2.2rem !important",
     fontFamily: "Roboto, sans-serif !important",
+  },
+  secondaryLinks: {
+    height: "5%",
+  },
+  mainInputGrid: {
+    padding: "1vw !important",
+  },
+  answerBoxGrid: {
+    height: "65% !important",
+    padding: "1vw !important",
+  },
+  secondaryButtonsGrid: {
+    display: "flex",
+    gap: "0.5vw !important",
+    padding: "1vw !important",
+  },
+  divider: {
+    backgroundColor: "grey",
   },
 }));
 
@@ -66,55 +96,84 @@ const resetApp = (dispatch) => {
   dispatch(setBERTAnswers([]));
 };
 
-const QnASection = ({ answerState, answersJson, topic, init }) => {
+const QnASection = ({
+  answerState,
+  answersJson,
+  topic,
+  init,
+  secondaryButtons,
+  wikiLink,
+}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   return (
-    <Grid
-      item
-      xs={8}
-      direction="column"
-      alignItems="flex-start"
-      justifyContent="space-between"
-      className={classes.qnaContainer}
-    >
+    <>
       <img
         src={answerBoxIllustration}
         alt="answer box illustration"
         className={classes.qnaIllustration}
       />
-      <MainInput
-        placeHolderText={`Ask me anything about '${topic}'`}
-        width={90}
-        type="setQuery"
-      />
-      <Paper
-        className={classes.answerBox}
-        sx={{
-          p: "20px 24px",
-        }}
+      <Grid
+        item
+        container
+        xs={8}
+        className={classes.qnaContainer}
+        alignContent="space-evenly"
       >
-        {answerState || !init ? (
-          <Typography className={classes.text}>
-            {init
-              ? answersJson.length === 0
-                ? "Sorry I don't know the answer to that..."
-                : answersJson[0].text
-              : null}
-          </Typography>
-        ) : (
-          <ThreeDots visible={true} height="80" width="80" color="#ea55b7" />
-        )}
-      </Paper>
-      <Button
-        variant="text"
-        size="large"
-        className={classes.secondaryButton}
-        onClick={() => resetApp(dispatch)}
-      >
-        CHOOSE ANOTHER TOPIC
-      </Button>
-    </Grid>
+        <Grid item xs={12} className={classes.mainInputGrid}>
+          <MainInput
+            placeHolderText={`Ask me anything about '${topic}'`}
+            width={97}
+            type="setQuery"
+          />
+        </Grid>
+        <Grid item xs={12} className={classes.answerBoxGrid}>
+          <Paper className={classes.answerBox}>
+            {answerState || !init ? (
+              <Typography className={classes.text}>
+                {init
+                  ? answersJson.length === 0
+                    ? "Sorry I don't know the answer to that..."
+                    : answersJson[0].text
+                  : null}
+              </Typography>
+            ) : (
+              <ThreeDots
+                visible={true}
+                height="80"
+                width="80"
+                color="#ea55b7"
+              />
+            )}
+          </Paper>
+        </Grid>
+        <Grid item xs={12} className={classes.secondaryButtonsGrid}>
+          <Button
+            variant="text"
+            size="large"
+            className={classes.changeTopic}
+            onClick={() => resetApp(dispatch)}
+          >
+            CHANGE TOPIC
+          </Button>
+          <Button
+            variant="text"
+            size="large"
+            target="_blank"
+            href={wikiLink}
+            className={classes.visitWiki}
+          >
+            VISIT WIKI
+          </Button>
+          <Divider
+            orientation="vertical"
+            className={classes.divider}
+            sx={{ m: 1, height: "28px" }}
+          />
+          <LinkSection buttons={secondaryButtons} />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 export default QnASection;

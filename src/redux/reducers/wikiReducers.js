@@ -18,6 +18,24 @@ export const wikiReducer = (state = [], { type, payload }) => {
   }
 };
 
+export const wikiURLReducer = (state = "", { type, payload }) => {
+  switch (type) {
+    case ActionTypes.WIKI_URL_ADDED:
+      return payload;
+    default:
+      return state;
+  }
+};
+
+export const wikiSecondaryLinksReducer = (state = [], { type, payload }) => {
+  switch (type) {
+    case ActionTypes.WIKI_SECONDARY_LINKS:
+      return payload;
+    default:
+      return state;
+  }
+};
+
 export const queryReducer = (state = "", { type, payload }) => {
   switch (type) {
     case ActionTypes.USER_QUERY_ADDED:

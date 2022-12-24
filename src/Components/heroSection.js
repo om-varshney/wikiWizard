@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2rem !important",
   },
   heroSectionImage: {
-    width: "30vw",
+    width: "33vw",
   },
 }));
 

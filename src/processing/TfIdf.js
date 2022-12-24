@@ -30,7 +30,7 @@ const TfIdfRanking = (documentsArray, queryString, dispatch) => {
     dispatch(
       setNotificationContent({
         type: "error",
-        msg: "The wizard is not feeling well... Please try with a different topic.",
+        msg: "Please try with a different topic.",
       })
     );
   }

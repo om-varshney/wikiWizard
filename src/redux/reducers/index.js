@@ -8,11 +8,15 @@ import {
   viewChangeReducer,
   notificationReducer,
   bertStateReducer,
+  wikiURLReducer,
+  wikiSecondaryLinksReducer,
 } from "./wikiReducers";
 
 export const reducers = combineReducers({
   topic: topicReducer,
   wiki: wikiReducer,
+  wikiURL: wikiURLReducer,
+  wikiSecondaryURLs: wikiSecondaryLinksReducer,
   queryText: queryReducer,
   passage: passageReducer,
   answers: bertReducer,

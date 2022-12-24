@@ -90,7 +90,7 @@ const MainInput = ({ placeHolderText, width, type }) => {
         borderRadius: "500px",
         backgroundColor: "transparent",
         backgroundImage:
-          "linear-gradient(to right, rgba(76, 147, 253, 0.5), rgba(76, 147, 253, 0))",
+          "linear-gradient(to right, rgba(76, 147, 253, 0.7), rgba(76, 147, 253, 0))",
       }}
     >
       <InputBase

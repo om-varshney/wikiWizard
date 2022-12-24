@@ -153,6 +153,8 @@ function App() {
               answersJson={appState.answers}
               topic={appState.topic}
               init={!!appState.queryText}
+              secondaryButtons={appState.wikiSecondaryURLs}
+              wikiLink={appState.wikiURL}
             />
           ) : (
             <>
@@ -167,14 +169,14 @@ function App() {
               </Grid>
               <Grid
                 item
-                xs={9}
+                xs={6}
                 direction="column"
                 alignItems="center"
                 className={classes.mainSearch}
               >
                 <MainInput
                   placeHolderText="What would you like to talk about today?"
-                  width={65}
+                  width={100}
                   type="setTopic"
                 />
               </Grid>

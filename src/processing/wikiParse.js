@@ -2,7 +2,9 @@ import { parse } from "node-html-parser";
 import {
   setNotificationContent,
   setView,
+  setWikiLink,
   setWikiParagraphs,
+  setWikiSecondaryLinks,
 } from "../redux/actions/wizardActions";
 
 const fetchWikiData = async (search, dispatch) => {
@@ -20,16 +22,21 @@ const fetchWikiData = async (search, dispatch) => {
     const response = await fetch(endpoint);
     const jsonResponse = await response.json();
     const pageId = jsonResponse.query.search[0].pageid;
+    const pageUrl = `https://en.wikipedia.org/?curid=${pageId}`;
     const pageTextEndpoint = `https://en.wikipedia.org/w/api.php?action=parse&origin=*&format=json&pageid=${pageId}`;
     const pageTextResponse = await fetch(pageTextEndpoint);
     const pageTextJson = await pageTextResponse.json();
-    dispatch(setWikiParagraphs(parseWikiContent(pageTextJson.parse.text["*"])));
+    const pageTextHTML = pageTextJson.parse.text["*"];
+    const wikiContent = parseWiki(pageTextHTML);
+    dispatch(setWikiParagraphs(wikiContent.p));
+    dispatch(setWikiLink(pageUrl));
+    dispatch(setWikiSecondaryLinks(wikiContent.a));
     dispatch(setView({ homeState: false, queryState: true }));
   } catch (err) {
     dispatch(
       setNotificationContent({
         type: "error",
-        msg: "The wizard is not feeling well... Please try with a different topic.",
+        msg: "Please try with a different topic.",
       })
     );
   }
@@ -37,8 +44,18 @@ const fetchWikiData = async (search, dispatch) => {
 
 export default fetchWikiData;
 
-const parseWikiContent = (content) => {
+const parseWiki = (content) => {
   const parseRoot = parse(content);
-  const paraTags = parseRoot.getElementsByTagName("p").slice(1, 10);
-  return paraTags.map((value) => value.structuredText);
+  const paraTags = parseRoot
+    .getElementsByTagName("p")
+    .slice(1, 10)
+    .filter((paragraph) => paragraph.text !== "");
+  const linkTags = paraTags[0]
+    .getElementsByTagName("a")
+    .slice(0, 5)
+    .filter((link) => link.text !== "");
+  return {
+    p: paraTags.map((value) => value.structuredText),
+    a: linkTags.map((value) => value.text),
+  };
 };

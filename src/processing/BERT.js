@@ -16,7 +16,7 @@ const BERTAnswers = async (passage, queryString, model, dispatch) => {
     dispatch(
       setNotificationContent({
         type: "error",
-        msg: "The wizard is not feeling well... Please try with a different topic.",
+        msg: "Please try with a different topic.",
       })
     );
   }

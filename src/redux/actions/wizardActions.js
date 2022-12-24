@@ -14,6 +14,20 @@ export const setWikiParagraphs = (paraObject) => {
   };
 };
 
+export const setWikiLink = (url) => {
+  return {
+    type: ActionTypes.WIKI_URL_ADDED,
+    payload: url,
+  };
+};
+
+export const setWikiSecondaryLinks = (links) => {
+  return {
+    type: ActionTypes.WIKI_SECONDARY_LINKS,
+    payload: links,
+  };
+};
+
 export const setUserQuery = (query) => {
   return {
     type: ActionTypes.USER_QUERY_ADDED,
