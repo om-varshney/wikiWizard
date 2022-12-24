@@ -106,6 +106,7 @@ const MainInput = ({ placeHolderText, width, type }) => {
           setInput(e.target.value);
         }}
         required={true}
+        onKeyPress={(e) => e.key === "Enter" && e.preventDefault()}
       />
       <IconButton
         type="button"
