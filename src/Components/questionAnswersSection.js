@@ -8,6 +8,7 @@ import answerBoxIllustration from "../Assets/Answer Box Illustration.svg";
 import {
   setBERTAnswers,
   setBERTPassage,
+  setNotificationContent,
   setTopic,
   setUserQuery,
   setView,
@@ -32,14 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   qnaContainerPseudoBackground: {
     backgroundImage:
-      "linear-gradient(to right, rgba(234, 85, 183, .8), rgba(76, 147, 253, .2)) !important",
-    padding: "3px",
-    marginTop: "10vh !important",
-    borderRadius: "20px",
-  },
-  answerBoxPseudoBackground: {
-    backgroundImage:
-      "linear-gradient(to right, rgba(234, 85, 183, .8), rgba(76, 147, 253, .2)) !important",
+      "linear-gradient(90deg, rgba(234, 85, 183, .8), rgba(76, 147, 253, 0)) !important",
     padding: "3px",
     marginTop: "10vh !important",
     borderRadius: "20px",
@@ -86,11 +80,11 @@ const useStyles = makeStyles((theme) => ({
     height: "5%",
   },
   mainInputGrid: {
-    padding: "1vw !important",
+    padding: ".4vh 1vw !important",
   },
   answerBoxGrid: {
-    height: "65% !important",
-    margin: "1vw !important",
+    height: "55% !important",
+    margin: "0.4vh 1vw !important",
     backgroundImage:
       "linear-gradient(to right, rgba(76, 147, 253, 0.7), rgba(76, 147, 253, 0)) !important",
     padding: "3px",
@@ -99,7 +93,20 @@ const useStyles = makeStyles((theme) => ({
   secondaryButtonsGrid: {
     display: "flex",
     gap: "0.5vw !important",
-    padding: "1vw !important",
+    padding: "0.4vh 1vw !important",
+  },
+  TODGrid: {
+    display: "flex",
+    padding: "0.4vh 1vw !important",
+  },
+  TODButton: {
+    fontFamily: "Roboto",
+    color: "white !important",
+    borderRadius: "500px !important",
+    paddingLeft: "1vw !important",
+    paddingRight: "1vw !important",
+    backgroundImage:
+      "linear-gradient(to right, rgba(234, 85, 183, .8), rgba(76, 147, 253, .7)) !important",
   },
   divider: {
     backgroundColor: "grey",
@@ -113,6 +120,15 @@ const resetApp = (dispatch) => {
   dispatch(setWikiParagraphs([]));
   dispatch(setBERTPassage(""));
   dispatch(setBERTAnswers([]));
+};
+
+const informCurrentTopic = (topic, dispatch) => {
+  dispatch(
+    setNotificationContent({
+      type: "info",
+      msg: `We are currently discussing about ${topic}`,
+    })
+  );
 };
 
 const QnASection = ({
@@ -140,10 +156,20 @@ const QnASection = ({
           className={classes.qnaContainer}
           alignContent="space-evenly"
         >
+          <Grid item xs={12} className={classes.TODGrid}>
+            <Button
+              variant="text"
+              size="large"
+              className={classes.TODButton}
+              onClick={() => informCurrentTopic(topic, dispatch)}
+            >
+              {topic.toUpperCase()}
+            </Button>
+          </Grid>
           <Grid item xs={12} className={classes.mainInputGrid}>
             <MainInput
               placeHolderText={`Ask me anything about '${topic}'`}
-              width={97}
+              width={95}
               type="setQuery"
             />
           </Grid>

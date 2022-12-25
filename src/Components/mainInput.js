@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const onSearch = (input, type, dispatch) => {
+const onSearch = (input, prevInput, type, dispatch) => {
   if (type === "setTopic") {
     if (input) {
       dispatch(setTopic(input));
@@ -52,7 +52,7 @@ const onSearch = (input, type, dispatch) => {
       );
     }
   } else if (type === "setQuery") {
-    if (input) {
+    if (input && input !== prevInput) {
       dispatch(setUserQuery(input));
       dispatch(setBERTAnswerState(false));
     } else {
@@ -116,7 +116,7 @@ const MainInput = ({ placeHolderText, width, type }) => {
         aria-label="search"
         size="medium"
         onClick={() => {
-          onSearch(input, type, dispatch);
+          onSearch(input, currentQuery, type, dispatch);
         }}
         className={classes.searchButton}
       >
