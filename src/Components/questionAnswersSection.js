@@ -168,14 +168,14 @@ const QnASection = ({
           </Grid>
           <Grid item xs={12} className={classes.mainInputGrid}>
             <MainInput
-              placeHolderText={`Ask me anything about '${topic}'`}
+              placeHolderText={`Ask me a factual question about '${topic}'`}
               width={95}
               type="setQuery"
             />
           </Grid>
           <Grid item xs={12} className={classes.answerBoxGrid}>
             <Paper className={classes.answerBox}>
-              {answerState || !init ? (
+              {answerState ? (
                 <Typography className={classes.text}>
                   {init
                     ? answersJson.length === 0
@@ -183,14 +183,14 @@ const QnASection = ({
                       : answersJson[0].text
                     : null}
                 </Typography>
-              ) : (
+              ) : init ? (
                 <ThreeDots
                   visible={true}
                   height="80"
                   width="80"
                   color="#ea55b7"
                 />
-              )}
+              ) : null}
             </Paper>
           </Grid>
           <Grid item xs={12} className={classes.secondaryButtonsGrid}>

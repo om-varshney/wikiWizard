@@ -27,10 +27,11 @@ const fetchWikiData = async (search, dispatch) => {
     const pageTextResponse = await fetch(pageTextEndpoint);
     const pageTextJson = await pageTextResponse.json();
     const pageTextHTML = pageTextJson.parse.text["*"];
-    const wikiContent = parseWiki(pageTextHTML);
-    dispatch(setWikiParagraphs(wikiContent.p));
+    const wikiParagraphs = parseWikiParagraphs(pageTextHTML);
+    const wikiLinks = parseParagraphLinks(wikiParagraphs[0]);
+    dispatch(setWikiParagraphs(wikiParagraphs));
     dispatch(setWikiLink(pageUrl));
-    dispatch(setWikiSecondaryLinks(wikiContent.a));
+    dispatch(setWikiSecondaryLinks(wikiLinks));
     dispatch(setView({ homeState: false, queryState: true }));
   } catch (err) {
     dispatch(
@@ -44,19 +45,18 @@ const fetchWikiData = async (search, dispatch) => {
 
 export default fetchWikiData;
 
-const parseWiki = (content) => {
+const parseWikiParagraphs = (content) => {
   const parseRoot = parse(content);
-  const paraTags = parseRoot
+  return parseRoot
     .getElementsByTagName("p")
     .slice(1, 10)
     .filter((paragraph) => paragraph.text !== "");
-  const linkTags = paraTags[0]
+};
+
+export const parseParagraphLinks = (paragraph) => {
+  return paragraph
     .getElementsByTagName("a")
     .slice(0, 7)
     .map((linkTag) => linkTag.text)
     .filter((link) => link !== "" && !/\[.*?]/.test(link));
-  return {
-    p: paraTags.map((value) => value.structuredText),
-    a: linkTags,
-  };
 };

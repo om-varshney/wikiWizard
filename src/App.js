@@ -84,7 +84,6 @@ function App() {
   const loadModel = async () => {
     const loadedModel = await qna.load();
     setModel(loadedModel);
-    console.log("Model Loaded");
   };
 
   const closeNotification = (event, reason) => {
@@ -175,7 +174,7 @@ function App() {
                 className={classes.mainSearch}
               >
                 <MainInput
-                  placeHolderText="What would you like to talk about today?"
+                  placeHolderText="What would you like to talk about? You may try 'wine' for starters."
                   width={100}
                   type="setTopic"
                 />

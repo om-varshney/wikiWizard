@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const onSearch = (input, prevInput, type, dispatch) => {
+const onSearch = (input, prevQuery, type, dispatch) => {
   if (type === "setTopic") {
     if (input) {
       dispatch(setTopic(input));
@@ -52,14 +52,14 @@ const onSearch = (input, prevInput, type, dispatch) => {
       );
     }
   } else if (type === "setQuery") {
-    if (input && input !== prevInput) {
+    if (input && input !== prevQuery) {
       dispatch(setUserQuery(input));
       dispatch(setBERTAnswerState(false));
     } else {
       dispatch(
         setNotificationContent({
           type: "warning",
-          msg: "Please ask a question first",
+          msg: "Please enter a new question.",
         })
       );
     }
@@ -109,7 +109,12 @@ const MainInput = ({ placeHolderText, width, type }) => {
           setInput(e.target.value);
         }}
         required={true}
-        onKeyPress={(e) => e.key === "Enter" && e.preventDefault()}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            onSearch(input, currentQuery, type, dispatch);
+          }
+        }}
       />
       <IconButton
         type="button"

@@ -84,7 +84,7 @@ export const notificationReducer = (state = {}, { type, payload }) => {
   }
 };
 
-export const bertStateReducer = (state = false, { type, payload }) => {
+export const bertStateReducer = (state = true, { type, payload }) => {
   switch (type) {
     case ActionTypes.BERT_ANSWERS_STATE:
       return payload;
