@@ -63,9 +63,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   text: {
+    display: "flex",
     color: "white",
-    fontSize: "2.2rem !important",
+    fontSize: "2rem !important",
     fontFamily: "Roboto, sans-serif !important",
+    width: "70%",
+    justifyContent: "center",
   },
   secondaryLinks: {
     height: "5%",

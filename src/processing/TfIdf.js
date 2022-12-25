@@ -17,12 +17,14 @@ const TfIdfRanking = (documentsArray, queryString, dispatch) => {
     const ranking = corpus.getResultsForQuery(queryString);
     const rankings = ranking.map((value, i) => Number(value[0][0]));
     const numDocs = Math.ceil(rankings.length / 3);
-    let BERTPassage = "";
+    let BERTPassage = validDocs[0];
     if (numDocs === 0) {
       BERTPassage = validDocs[0];
     } else {
       for (let i = 0; i < numDocs; i++) {
-        BERTPassage += validDocs[i];
+        if (rankings[i] !== 0) {
+          BERTPassage += validDocs[rankings[i]];
+        }
       }
     }
     dispatch(setBERTPassage(BERTPassage));

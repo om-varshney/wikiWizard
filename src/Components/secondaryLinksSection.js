@@ -1,7 +1,13 @@
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import { useDispatch } from "react-redux";
-import { setTopic } from "../redux/actions/wizardActions";
+import {
+  setBERTAnswers,
+  setBERTPassage,
+  setTopic,
+  setUserQuery,
+  setWikiParagraphs,
+} from "../redux/actions/wizardActions";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
@@ -21,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
 
 const setDiscussionTopic = (topic, dispatch) => {
   dispatch(setTopic(topic));
+  dispatch(setUserQuery(""));
+  dispatch(setWikiParagraphs([]));
+  dispatch(setBERTPassage(""));
+  dispatch(setBERTAnswers([]));
 };
 
 const SecondaryLinkButton = ({ buttonTopic, dispatch, fullText }) => {

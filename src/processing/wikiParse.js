@@ -52,10 +52,11 @@ const parseWiki = (content) => {
     .filter((paragraph) => paragraph.text !== "");
   const linkTags = paraTags[0]
     .getElementsByTagName("a")
-    .slice(0, 5)
-    .filter((link) => link.text !== "");
+    .slice(0, 7)
+    .map((linkTag) => linkTag.text)
+    .filter((link) => link !== "" && !/\[.*?]/.test(link));
   return {
     p: paraTags.map((value) => value.structuredText),
-    a: linkTags.map((value) => value.text),
+    a: linkTags,
   };
 };

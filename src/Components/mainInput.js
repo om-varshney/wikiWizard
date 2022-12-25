@@ -5,8 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setBERTAnswers,
   setBERTAnswerState,
@@ -76,8 +76,11 @@ const onClose = (type, dispatch) => {
 const MainInput = ({ placeHolderText, width, type }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const currentQuery = useSelector((state) => state.queryText);
 
   const [input, setInput] = useState("");
+  useEffect(() => setInput(currentQuery), [currentQuery]);
+  // for the case when user clicks a secondary link and input box is not empty.
 
   return (
     <Paper
