@@ -20,8 +20,8 @@ import Divider from "@mui/material/Divider";
 
 const useStyles = makeStyles((theme) => ({
   qnaContainer: {
-    backgroundColor: "rgba(4, 0, 29, 0.5)",
-    marginTop: "10vh !important",
+    backgroundColor: "#080036",
+    // marginTop: "10vh !important",
     borderRadius: "20px",
     height: "70vh",
   },
@@ -30,14 +30,26 @@ const useStyles = makeStyles((theme) => ({
     right: "10vw",
     bottom: 10,
   },
+  qnaContainerPseudoBackground: {
+    backgroundImage:
+      "linear-gradient(to right, rgba(234, 85, 183, .8), rgba(76, 147, 253, .2)) !important",
+    padding: "3px",
+    marginTop: "10vh !important",
+    borderRadius: "20px",
+  },
+  answerBoxPseudoBackground: {
+    backgroundImage:
+      "linear-gradient(to right, rgba(234, 85, 183, .8), rgba(76, 147, 253, .2)) !important",
+    padding: "3px",
+    marginTop: "10vh !important",
+    borderRadius: "20px",
+  },
   answerBox: {
     display: "flex",
     width: "auto",
     height: "100%",
-    borderRadius: "15px !important",
-    backgroundColor: "transparent !important",
-    // backgroundImage: "linear-gradient(to right, rgba(76, 147, 253, 0.5), rgba(76, 147, 253, 0))",
-    border: "3px solid rgba(76, 147, 253, 0.5)",
+    borderRadius: "20px !important",
+    backgroundColor: "#080036 !important",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -78,7 +90,11 @@ const useStyles = makeStyles((theme) => ({
   },
   answerBoxGrid: {
     height: "65% !important",
-    padding: "1vw !important",
+    margin: "1vw !important",
+    backgroundImage:
+      "linear-gradient(to right, rgba(76, 147, 253, 0.7), rgba(76, 147, 253, 0)) !important",
+    padding: "3px",
+    borderRadius: "20px",
   },
   secondaryButtonsGrid: {
     display: "flex",
@@ -116,64 +132,66 @@ const QnASection = ({
         alt="answer box illustration"
         className={classes.qnaIllustration}
       />
-      <Grid
-        item
-        container
-        xs={8}
-        className={classes.qnaContainer}
-        alignContent="space-evenly"
-      >
-        <Grid item xs={12} className={classes.mainInputGrid}>
-          <MainInput
-            placeHolderText={`Ask me anything about '${topic}'`}
-            width={97}
-            type="setQuery"
-          />
-        </Grid>
-        <Grid item xs={12} className={classes.answerBoxGrid}>
-          <Paper className={classes.answerBox}>
-            {answerState || !init ? (
-              <Typography className={classes.text}>
-                {init
-                  ? answersJson.length === 0
-                    ? "Sorry I don't know the answer to that..."
-                    : answersJson[0].text
-                  : null}
-              </Typography>
-            ) : (
-              <ThreeDots
-                visible={true}
-                height="80"
-                width="80"
-                color="#ea55b7"
-              />
-            )}
-          </Paper>
-        </Grid>
-        <Grid item xs={12} className={classes.secondaryButtonsGrid}>
-          <Button
-            variant="text"
-            size="large"
-            className={classes.changeTopic}
-            onClick={() => resetApp(dispatch)}
-          >
-            CHANGE TOPIC
-          </Button>
-          <Button
-            variant="text"
-            size="large"
-            target="_blank"
-            href={wikiLink}
-            className={classes.visitWiki}
-          >
-            VISIT WIKI
-          </Button>
-          <Divider
-            orientation="vertical"
-            className={classes.divider}
-            sx={{ m: 1, height: "28px" }}
-          />
-          <LinkSection buttons={secondaryButtons} />
+      <Grid container xs={8} className={classes.qnaContainerPseudoBackground}>
+        <Grid
+          item
+          container
+          xs={12}
+          className={classes.qnaContainer}
+          alignContent="space-evenly"
+        >
+          <Grid item xs={12} className={classes.mainInputGrid}>
+            <MainInput
+              placeHolderText={`Ask me anything about '${topic}'`}
+              width={97}
+              type="setQuery"
+            />
+          </Grid>
+          <Grid item xs={12} className={classes.answerBoxGrid}>
+            <Paper className={classes.answerBox}>
+              {answerState || !init ? (
+                <Typography className={classes.text}>
+                  {init
+                    ? answersJson.length === 0
+                      ? "Sorry I don't know the answer to that..."
+                      : answersJson[0].text
+                    : null}
+                </Typography>
+              ) : (
+                <ThreeDots
+                  visible={true}
+                  height="80"
+                  width="80"
+                  color="#ea55b7"
+                />
+              )}
+            </Paper>
+          </Grid>
+          <Grid item xs={12} className={classes.secondaryButtonsGrid}>
+            <Button
+              variant="text"
+              size="large"
+              target="_blank"
+              href={wikiLink}
+              className={classes.visitWiki}
+            >
+              VISIT WIKI
+            </Button>
+            <Button
+              variant="text"
+              size="large"
+              className={classes.changeTopic}
+              onClick={() => resetApp(dispatch)}
+            >
+              CHANGE TOPIC
+            </Button>
+            <Divider
+              orientation="vertical"
+              className={classes.divider}
+              sx={{ m: 1, height: "28px" }}
+            />
+            <LinkSection buttons={secondaryButtons} />
+          </Grid>
         </Grid>
       </Grid>
     </>
