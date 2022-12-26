@@ -13,7 +13,7 @@ const TfIdfRanking = (documentsArray, queryString, dispatch) => {
   }
   try {
     dispatch(setBERTAnswerState(false));
-    const docsText = documentsArray.map((doc) => doc.text);
+    const docsText = documentsArray.map((doc) => doc.structuredText);
     const corpus = new Corpus(
       [...Array(docsText.length)].map((_, i) => `${i}`),
       docsText
