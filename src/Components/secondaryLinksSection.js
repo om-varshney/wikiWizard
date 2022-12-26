@@ -52,23 +52,18 @@ const LinkSection = ({ buttons }) => {
 
   return (
     <>
-      {buttons.map((buttonText, index) => {
-        if (index < 3) {
-          return (
-            <SecondaryLinkButton
-              buttonTopic={
-                buttonText.length > 20
-                  ? buttonText.slice(0, 15) + "..."
-                  : buttonText
-              }
-              fullText={buttonText}
-              dispatch={dispatch}
-              key={index}
-            />
-          );
-        }
-        return null;
-      })}
+      {buttons.slice(0, 3).map((buttonText, index) => (
+        <SecondaryLinkButton
+          buttonTopic={
+            buttonText.length > 20
+              ? buttonText.slice(0, 15) + "..."
+              : buttonText
+          }
+          fullText={buttonText}
+          dispatch={dispatch}
+          key={index}
+        />
+      ))}
     </>
   );
 };

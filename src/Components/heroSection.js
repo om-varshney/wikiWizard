@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
-import personalAssistant from "../Assets/Personal Assistant SVG.svg";
+import personalAssistant from "../Assets/Personal Assistant.png";
 
 const useStyles = makeStyles((theme) => ({
   mainHeading: {
