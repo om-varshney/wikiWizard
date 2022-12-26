@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setBERTAnswers,
-  setBERTAnswerState,
   setNotificationContent,
   setTopic,
   setUserQuery,
@@ -54,7 +53,6 @@ const onSearch = (input, prevQuery, type, dispatch) => {
   } else if (type === "setQuery") {
     if (input && input !== prevQuery) {
       dispatch(setUserQuery(input));
-      dispatch(setBERTAnswerState(false));
     } else {
       dispatch(
         setNotificationContent({

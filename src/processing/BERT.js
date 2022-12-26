@@ -10,8 +10,10 @@ const BERTAnswers = async (passage, queryString, model, dispatch) => {
       return;
     }
     const answers = await model.findAnswers(queryString, passage);
-    dispatch(setBERTAnswers(answers));
-    dispatch(setBERTAnswerState(true));
+    setTimeout(() => {
+      dispatch(setBERTAnswers(answers));
+      dispatch(setBERTAnswerState(true));
+    }, 3000);
   } catch (err) {
     dispatch(
       setNotificationContent({

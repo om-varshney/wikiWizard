@@ -12,6 +12,7 @@ const fetchWikiData = async (search, dispatch) => {
     if (!search) {
       return;
     }
+    console.log("fetching wiki data...");
     dispatch(
       setNotificationContent({
         type: "info",

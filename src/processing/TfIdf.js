@@ -1,5 +1,6 @@
 import { Corpus } from "tiny-tfidf";
 import {
+  setBERTAnswerState,
   setBERTPassage,
   setNotificationContent,
   setWikiSecondaryLinks,
@@ -11,6 +12,7 @@ const TfIdfRanking = (documentsArray, queryString, dispatch) => {
     return;
   }
   try {
+    dispatch(setBERTAnswerState(false));
     const docsText = documentsArray.map((doc) => doc.text);
     const corpus = new Corpus(
       [...Array(docsText.length)].map((_, i) => `${i}`),

@@ -183,14 +183,14 @@ const QnASection = ({
                       : answersJson[0].text
                     : null}
                 </Typography>
-              ) : init ? (
+              ) : (
                 <ThreeDots
                   visible={true}
                   height="80"
                   width="80"
                   color="#ea55b7"
                 />
-              ) : null}
+              )}
             </Paper>
           </Grid>
           <Grid item xs={12} className={classes.secondaryButtonsGrid}>
