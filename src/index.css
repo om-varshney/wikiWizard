@@ -17,9 +17,14 @@ code {
 }
 
 .MuiAlert-filledInfo {
-  background-color: rgba(76, 147, 253, 0.7) !important;
+  background-color: rgba(76, 147, 253, 1) !important;
 }
 
 .MuiAlert-filledError {
-  background-color: rgba(131, 0, 0, 0.7) !important;
+  background-color: rgba(131, 0, 0, 1) !important;
+}
+
+.MuiAlert-filledSuccess {
+  color: #333F4F !important;
+  background-color: rgba(160, 238, 83, 0.8) !important;
 }

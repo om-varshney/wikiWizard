@@ -12,11 +12,10 @@ const fetchWikiData = async (search, dispatch) => {
     if (!search) {
       return;
     }
-    console.log("fetching wiki data...");
     dispatch(
       setNotificationContent({
         type: "info",
-        msg: "Collecting Information",
+        msg: "Consulting the tomes...",
       })
     );
     const endpoint = `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&utf8=&origin=*&srlimit=1&srsearch=${search}`;
@@ -27,6 +26,7 @@ const fetchWikiData = async (search, dispatch) => {
     const pageTextEndpoint = `https://en.wikipedia.org/w/api.php?action=parse&origin=*&format=json&pageid=${pageId}`;
     const pageTextResponse = await fetch(pageTextEndpoint);
     const pageTextJson = await pageTextResponse.json();
+    console.log(pageTextJson);
     const pageTextHTML = pageTextJson.parse.text["*"];
     const wikiParagraphs = parseWikiParagraphs(pageTextHTML);
     const wikiLinks = parseParagraphLinks(wikiParagraphs[0]);
@@ -47,17 +47,23 @@ const fetchWikiData = async (search, dispatch) => {
 export default fetchWikiData;
 
 const parseWikiParagraphs = (content) => {
-  const parseRoot = parse(content);
-  return parseRoot
-    .getElementsByTagName("p")
-    .slice(1, 10)
-    .filter((paragraph) => paragraph.text !== "");
+  if (content) {
+    const parseRoot = parse(content);
+    return parseRoot
+      .getElementsByTagName("p")
+      .slice(1, 10)
+      .filter((paragraph) => paragraph.text !== "");
+  }
+  return null;
 };
 
 export const parseParagraphLinks = (paragraph) => {
-  return paragraph
-    .getElementsByTagName("a")
-    .slice(0, 7)
-    .map((linkTag) => linkTag.text)
-    .filter((link) => link !== "" && !/\[.*?]/.test(link));
+  if (paragraph) {
+    return paragraph
+      .getElementsByTagName("a")
+      .slice(0, 7)
+      .map((linkTag) => linkTag.text)
+      .filter((link) => link !== "" && !/\[.*?]/.test(link));
+  }
+  return null;
 };

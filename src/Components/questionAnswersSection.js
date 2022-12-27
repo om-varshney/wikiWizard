@@ -4,9 +4,10 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 import MainInput from "./mainInput";
-import answerBoxIllustration from "../Assets/Answer Box Illustration.svg";
+import answerBoxIllustration from "../Assets/Answer Box Illustration.png";
 import {
   setBERTAnswers,
+  setBERTAnswerState,
   setBERTPassage,
   setNotificationContent,
   setTopic,
@@ -120,12 +121,13 @@ const resetApp = (dispatch) => {
   dispatch(setWikiParagraphs([]));
   dispatch(setBERTPassage(""));
   dispatch(setBERTAnswers([]));
+  dispatch(setBERTAnswerState(true));
 };
 
 const informCurrentTopic = (topic, dispatch) => {
   dispatch(
     setNotificationContent({
-      type: "info",
+      type: "success",
       msg: `We are currently discussing about ${topic}`,
     })
   );

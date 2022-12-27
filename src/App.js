@@ -174,7 +174,7 @@ function App() {
                 className={classes.mainSearch}
               >
                 <MainInput
-                  placeHolderText="What would you like to talk about? You may try 'wine' for starters."
+                  placeHolderText="What would you like to talk about? Factual topics work best."
                   width={100}
                   type="setTopic"
                 />

@@ -52,18 +52,22 @@ const LinkSection = ({ buttons }) => {
 
   return (
     <>
-      {buttons.slice(0, 3).map((buttonText, index) => (
-        <SecondaryLinkButton
-          buttonTopic={
-            buttonText.length > 20
-              ? buttonText.slice(0, 15) + "..."
-              : buttonText
-          }
-          fullText={buttonText}
-          dispatch={dispatch}
-          key={index}
-        />
-      ))}
+      {buttons
+        ? buttons
+            .slice(0, 3)
+            .map((buttonText, index) => (
+              <SecondaryLinkButton
+                buttonTopic={
+                  buttonText.length > 20
+                    ? buttonText.slice(0, 15) + "..."
+                    : buttonText
+                }
+                fullText={buttonText}
+                dispatch={dispatch}
+                key={index}
+              />
+            ))
+        : null}
     </>
   );
 };
